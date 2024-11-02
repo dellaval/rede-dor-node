@@ -1,26 +1,33 @@
 const express = require("express");
 const app = express();
 
-var db = require('mysql2')
-var connection = db.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'rededor',
-  port:'3310',
-  connectionLimit: 10
+const db = require("mysql2");
+const connection = db.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",  // Insira sua senha, se houver
+  database: "rededor",
+  port: 3310,  // Verifique se a porta é correta
+  connectionLimit: 10,
 });
 
-connection.connect();
-
-app.get("/", function(req, res){
-    res.send("Seja bem vindo ao meu.")
+// Conectar ao banco de dados com tratamento de erro
+connection.connect((err) => {
+  if (err) {
+    console.error("Erro ao conectar ao banco de dados:", err.stack);
+    return;
+  }
+  console.log("Conexão ao banco de dados estabelecida.");
 });
 
-app.get("/sobre", function(req, res){
-    res.send("Minha página sobre.");
+app.get("/", (req, res) => {
+  res.send("Seja bem vindo ao meu.");
 });
 
-app.listen(3000, function(){
-    console.log("Servidor Executando!");
+app.get("/sobre", (req, res) => {
+  res.send("Minha página sobre.");
+});
+
+app.listen(3000, () => {
+  console.log("Servidor executando na porta 3000!");
 });
