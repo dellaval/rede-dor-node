@@ -1,5 +1,5 @@
 {
-  "name": "minha-aplicacao",
+  "name": "teste-rededor",
   "version": "1.0.0",
   "description": "Aplicação Node.js com Express, Sequelize, Cors e MySQL",
   "main": "app.js",
@@ -19,6 +19,6 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "author": "Seu Nome",
+  "author": "William Dellaval",
   "license": "MIT"
 }
