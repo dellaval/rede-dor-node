@@ -9,7 +9,7 @@ var connection = db.createConnection({
   database: 'rededor',
   port:'3310',
   connectionLimit: 10
-})
+});
 
 connection.connect();
 
