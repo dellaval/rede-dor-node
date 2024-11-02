@@ -7,7 +7,7 @@ const connection = db.createConnection({
   user: "root",
   password: "",  // Insira sua senha, se houver
   database: "rededor",
-  port: 3306,  // Verifique se a porta é correta
+  port: 3310,  // Verifique se a porta é correta
   connectionLimit: 10,
 });
 
