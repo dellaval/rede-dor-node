@@ -3,9 +3,9 @@ const app = express();
 
 const db = require("mysql2");
 const connection = db.createConnection({
-  host: "mysql-db",
+  host: "localhost",
   user: "root",
-  password: "123123",  // Insira sua senha, se houver
+  password: "",  // Insira sua senha, se houver
   database: "rededor",
   port: 3310,  // Verifique se a porta é correta
   connectionLimit: 10,
