@@ -1,0 +1,15 @@
+{
+  "name": "app-node",
+  "version": "1.0.0",
+  "description": "Aplicação Node.js com Sequelize e MySQL",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.28.0",
+    "mysql2": "^2.3.3",
+    "cors": "^2.8.5"
+  }
+}
