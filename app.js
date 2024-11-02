@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 
-const mysql = require("mysql2");
-const connection = mysql.createConnection({
-    host: 'localhost:3315',
-    user: 'root',
-    password: ''
-});
+// const mysql = require("mysql2");
+// const connection = mysql.createConnection({
+//     host: 'localhost:3315',
+//     user: 'root',
+//     password: ''
+// });
 
-connection.connect();
+// connection.connect();
 
 app.get("/", function(req, res){
     res.send("Seja bem vindo ao meu.")
