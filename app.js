@@ -3,11 +3,11 @@ const app = express();
 
 const db = require("mysql2");
 const connection = db.createConnection({
-  host: "172.20.0.2",
+  host: "db",
   user: "root",
   password: "",  // Insira sua senha, se houver
   database: "rededor",
-  port: 3310,  // Verifique se a porta é correta
+  port: 3306,  // Verifique se a porta é correta
   connectionLimit: 10,
 });
 
