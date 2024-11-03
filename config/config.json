@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "rededor",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": 3310
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "rededor",
+    "host": "db",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "rededor",
+    "host": "db",
+    "dialect": "mysql"
+  }
+}
