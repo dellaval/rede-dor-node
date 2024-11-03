@@ -1,23 +1,23 @@
 const express = require("express");
+const Sequelize = require("sequelize");
+
 const app = express();
 
-const db = require("mysql2");
-const connection = db.createConnection({
-  host: "db",
-  user: "root",
-  password: "",  // Insira sua senha, se houver
-  database: "rededor",
-  port: 3306,  // Verifique se a porta é correta
-  connectionLimit: 10,
-});
+const sequelize = new Sequelize(
+   'rededor',
+   'root',
+   '',
+    {
+      host: 'db',
+      port: 3306,
+      dialect: 'mysql'
+    }
+  );
 
-// Conectar ao banco de dados com tratamento de erro
-connection.connect((err) => {
-  if (err) {
-    console.error("Erro ao conectar ao banco de dados:", err.stack);
-    return;
-  }
-  console.log("Conexão ao banco de dados estabelecida.");
+sequelize.authenticate().then(() => {
+   console.log('Connection has been established successfully.');
+}).catch((error) => {
+   console.error('Unable to connect to the database: ', error);
 });
 
 app.get("/", (req, res) => {
