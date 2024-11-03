@@ -26,6 +26,24 @@ const sequelize = new Sequelize(
     }
 )
 
+const movies = sequelize.define('movies', {
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: Sequelize.INTEGER
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  synopsis: {
+    type: Sequelize.STRING
+  },
+  rating: {
+    type: Sequelize.STRING
+  }
+});
+
 sequelize.authenticate().then(() => {
    console.log('Connection has been established successfully.');
 }).catch((error) => {
@@ -40,8 +58,19 @@ app.get("/", (req, res) => {
   res.send("Seja bem vindo ao meu.");
 });
 
-app.get("/sobre", (req, res) => {
-  res.send("Minha página sobre.");
+app.post('/movies', function (request, response) {
+  return movies.create({
+      id: request.body.id,
+      name: request.body.name,
+      synopsis: request.body.synopsis,
+      rating: request.body.rating
+  }).then(function (users) {
+      if (movies) {
+          response.send(users);
+      } else {
+          response.status(400).send('Error in insert new record');
+      }
+  });
 });
 
 app.listen(3000, () => {
