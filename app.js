@@ -1,7 +1,10 @@
 const express = require("express");
 const Sequelize = require("sequelize");
+var bodyParser = require("body-parser");
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
 const DB = 'rededor';
 const USER = 'root';
