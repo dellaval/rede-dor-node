@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "",
     "database": "rededor",
     "host": "db",
     "dialect": "mysql",
@@ -16,7 +16,7 @@
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "",
     "database": "rededor",
     "host": "db",
     "dialect": "mysql",

@@ -3,8 +3,9 @@ const Sequelize = require("sequelize");
 
 const app = express();
 
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'production';
 const config = require(__dirname + '/config/config.json')[env];
+console.log(config)
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 
