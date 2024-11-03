@@ -32,7 +32,9 @@ sequelize.authenticate().then(() => {
    console.error('Unable to connect to the database: ', error);
 });
 
-sequelize.sync();
+sequelize.sync({
+  force: true
+});
 
 app.get("/", (req, res) => {
   res.send("Seja bem vindo ao meu.");
