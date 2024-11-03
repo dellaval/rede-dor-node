@@ -3,9 +3,9 @@
     "username": "root",
     "password": null,
     "database": "rededor",
-    "host": "localhost",
+    "host": "db",
     "dialect": "mysql",
-    "port": 3310
+    "port": 3306
   },
   "test": {
     "username": "root",
