@@ -4,5 +4,5 @@
   "database": "rededor",
   "host": "db",
   "dialect": "mysql",
-  "port": 3310
+  "port": 3306
 }
