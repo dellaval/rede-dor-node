@@ -1,6 +1,5 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-const { stringify } = require('flatted');
 
 const app = express();
 
@@ -73,9 +72,7 @@ app.get("/", (req, res) => {
 });
 
 app.post('/movies', (req, res) => {
-  res.send(stringify(req));
-/*
-  const movie = movies.create({
+  return movies.create({
       name: req.body.name,
       synopsis: req.body.synopsis,
       rating: req.body.rating
@@ -86,7 +83,6 @@ app.post('/movies', (req, res) => {
           response.status(400).send('Error in insert new record');
       }
   });
-  */
 });
 
 app.listen(3000, () => {
