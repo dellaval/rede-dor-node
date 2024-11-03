@@ -165,32 +165,27 @@ app.post('/reserve/:id', (req, res) => {
   });
 });
 
-app.put('/reserved/:id', async (req, res) => {
-  const { id } = req.params.id;
-  try {
-    const [updated] = await scheduleMovies.update({
+app.put('/reserve/:id', (req, res) => {
+  const id = req.params.id;
+    return scheduleMovies.create({
       reserveId: id,
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone
-    },{ where: { id }});
-
-    if (updated) {
-      const updatedMovie = await redeservedMovies.findOne({ where: { id } });
-      return res.status(200).json({ movie: updatedMovie });
-    }
-
-    throw new Error('Não foi possível confirmar a reserva.');
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
+    }).then(function (movie) {
+      if (movie) {
+          res.send(movie);
+      } else {
+          res.status(400).send('Error in insert new record');
+      }
+  });
 });
 
-app.delete('/reserved/:id', async (req, res) => {
-  const { id } = req.params.id;
+app.delete('/reserve/:id', async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const deleted = await reservedAt.destroy({ where: { id }});
+    const deleted = await redeservedMovies.destroy({ where: { id } });
 
     if (deleted) {
       return res.status(200).json({ message: 'Devolução confirmada.' });
