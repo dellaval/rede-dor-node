@@ -1,12 +1,9 @@
 const express = require("express");
 const Sequelize = require("sequelize");
+const { stringify } = require('flatted');
+
 
 const app = express();
-
-// const env = process.env.NODE_ENV || 'production';
-// const config = require(__dirname + '/config/config.json')[env];
-// console.log(config)
-//const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 const DB = 'rededor';
 const USER = 'root';
@@ -24,7 +21,7 @@ const sequelize = new Sequelize(
         dialect: DIALECT,
         port: PORT,
     }
-)
+);
 
 const movies = sequelize.define('movies', {
   id: {
@@ -76,18 +73,21 @@ app.get("/", (req, res) => {
   res.send("Seja bem vindo ao meu.");
 });
 
-app.post('/movies', function (request, response) {
-  return movies.create({
-      name: request.body.name,
-      synopsis: request.body.synopsis,
-      rating: request.body.rating
-  }).then(function (users) {
-      if (movies) {
-          response.send(users);
+app.post('/movies', (req, res) => {
+  res.send(stringify(req));
+/*
+  const movie = movies.create({
+      name: req.body.name,
+      synopsis: req.body.synopsis,
+      rating: req.body.rating
+  }).then(function (movie) {
+      if (movie) {
+          response.send(movie);
       } else {
           response.status(400).send('Error in insert new record');
       }
   });
+  */
 });
 
 app.listen(3000, () => {
