@@ -50,7 +50,12 @@ const redeservedMovies = sequelize.define('reservedMovies', {
     type: Sequelize.INTEGER
   },
   movieId: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    unique: true,
+    references: {
+      model: "movies",
+      key: "id",
+    },
   },
   createdAt: {
     type: Sequelize.DATE
@@ -81,11 +86,94 @@ app.post('/movies', (req, res) => {
       rating: req.body.rating
   }).then(function (movie) {
       if (movie) {
-          response.send(movie);
+          res.send(movie);
       } else {
-          response.status(400).send('Error in insert new record');
+          res.status(400).send('Error in insert new record');
       }
   });
+});
+
+app.put('/movies/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [updated] = await movies.update({
+        name: req.body.name,
+        synopsis: req.body.synopsis,
+        rating: req.body.rating
+    },{ where: { id }});
+
+    if (updated) {
+      const updatedMovie = await movies.findOne({ where: { id } });
+      return res.status(200).json({ movie: updatedMovie });
+    }
+
+    throw new Error('Filme não encontrado');
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/movies/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await movies.destroy({ where: { id }});
+
+    if (deleted) {
+      return res.status(200).json({ message: 'fILME excluído com sucesso' });
+    }
+
+    return res.status(404).json({ message: 'fILME não encontrado' });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/reserve/:id', (req, res) => {
+  const id = req.params.id;
+  return redeservedMovies.create({
+      movieId: id
+  }).then(function (reserved) {
+      if (reserved) {
+          res.send(reserved);
+      } else {
+          res.status(400).send('Não foi possivel fazer a reserva.');
+      }
+  });
+});
+
+app.put('/reserved/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [updated] = await redeservedMovies.update({
+      
+    },{ where: { id }});
+
+    if (updated) {
+      const updatedMovie = await redeservedMovies.findOne({ where: { id } });
+      return res.status(200).json({ movie: updatedMovie });
+    }
+
+    throw new Error('Usuário não encontrado');
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/reserved/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await reservedAt.destroy({ where: { id }});
+
+    if (deleted) {
+      return res.status(200).json({ message: 'fILME excluído com sucesso' });
+    }
+
+    return res.status(404).json({ message: 'fILME não encontrado' });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 app.listen(3000, () => {
