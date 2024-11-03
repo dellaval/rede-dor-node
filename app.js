@@ -65,6 +65,27 @@ const redeservedMovies = sequelize.define('reservedMovies', {
   }
 });
 
+const scheduleMovies = sequelize.define('scheduleMovies', {
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: Sequelize.INTEGER
+  },
+  reserveId: {
+    type: Sequelize.INTEGER,
+    unique: true,
+    onDelete: 'CASCADE',
+    references: {
+      model: "reservedMovies",
+      key: "id",
+    },
+  },
+  name: Sequelize.STRING,
+  email: Sequelize.STRING,
+  phone: Sequelize.STRING
+});
+
 sequelize.authenticate().then(() => {
    console.log('Connection has been established successfully.');
 }).catch((error) => {
@@ -131,8 +152,10 @@ app.delete('/movies/:id', async (req, res) => {
 
 app.post('/reserve/:id', (req, res) => {
   const id = req.params.id;
+  const now = new Date();
   return redeservedMovies.create({
-      movieId: id
+      movieId: id,
+      reservetAt: now.setHours(now.getHours() + 3)
   }).then(function (reserved) {
       if (reserved) {
           res.send(reserved);
@@ -143,10 +166,13 @@ app.post('/reserve/:id', (req, res) => {
 });
 
 app.put('/reserved/:id', async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params.id;
   try {
-    const [updated] = await redeservedMovies.update({
-      
+    const [updated] = await scheduleMovies.update({
+      reserveId: id,
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone
     },{ where: { id }});
 
     if (updated) {
@@ -154,23 +180,23 @@ app.put('/reserved/:id', async (req, res) => {
       return res.status(200).json({ movie: updatedMovie });
     }
 
-    throw new Error('Usuário não encontrado');
+    throw new Error('Não foi possível confirmar a reserva.');
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 });
 
 app.delete('/reserved/:id', async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params.id;
 
   try {
     const deleted = await reservedAt.destroy({ where: { id }});
 
     if (deleted) {
-      return res.status(200).json({ message: 'fILME excluído com sucesso' });
+      return res.status(200).json({ message: 'Devolução confirmada.' });
     }
 
-    return res.status(404).json({ message: 'fILME não encontrado' });
+    return res.status(404).json({ message: 'Não foi possível realizar a devolução do filme.' });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
