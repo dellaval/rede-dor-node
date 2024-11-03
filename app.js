@@ -2,7 +2,6 @@ const express = require("express");
 const Sequelize = require("sequelize");
 const { stringify } = require('flatted');
 
-
 const app = express();
 
 const DB = 'rededor';
