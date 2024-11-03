@@ -19,6 +19,7 @@
     "password": null,
     "database": "rededor",
     "host": "db",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "port": 3306
   }
 }

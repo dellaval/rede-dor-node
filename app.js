@@ -3,16 +3,10 @@ const Sequelize = require("sequelize");
 
 const app = express();
 
-const sequelize = new Sequelize(
-   'rededor',
-   'root',
-   '',
-    {
-      host: 'db',
-      port: 3306,
-      dialect: 'mysql'
-    }
-  );
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/config/config.json')[env];
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
+
 
 sequelize.authenticate().then(() => {
    console.log('Connection has been established successfully.');
