@@ -44,6 +44,24 @@ const movies = sequelize.define('movies', {
   }
 });
 
+const redeservedMovies = sequelize.define('reservedMovies', {
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: Sequelize.INTEGER
+  },
+  movieId: {
+    type: Sequelize.INTEGER
+  },
+  createdAt: {
+    type: Sequelize.DATE
+  },
+  reservedAt: {
+    type: Sequelize.DATE
+  }
+});
+
 sequelize.authenticate().then(() => {
    console.log('Connection has been established successfully.');
 }).catch((error) => {
@@ -60,7 +78,6 @@ app.get("/", (req, res) => {
 
 app.post('/movies', function (request, response) {
   return movies.create({
-      id: request.body.id,
       name: request.body.name,
       synopsis: request.body.synopsis,
       rating: request.body.rating
