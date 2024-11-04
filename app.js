@@ -115,11 +115,21 @@ sequelize.authenticate().then(() => {
    console.error('Unable to connect to the database: ', error);
 });
 
-sequelize.sync({
-  force: true
-});
+(async () => {
+  try {
+    // Sincroniza o banco de dados
+    await sequelize.sync({ force: true });
 
-await movieSeeder.up(sequelize.getQueryInterface(), sequelize.constructor);
+    // Executa a seed
+    await movieSeeder.up(sequelize.getQueryInterface(), sequelize.constructor);
+
+    console.log('Database synced and seeds executed successfully');
+  } catch (error) {
+    console.error('Error syncing database and executing seeds:', error);
+  } finally {
+    await sequelize.close();
+  }
+})();
 
 app.get("/", (req, res) => {
   res.send("Seja bem vindo ao meu.");
