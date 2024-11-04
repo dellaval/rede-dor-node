@@ -67,6 +67,16 @@ const redeservedMovies = sequelize.define('reservedMovies', {
   }
 });
 
+// Relacionamento: um filme pode ter muitas reservas
+movies.hasMany(redeservedMovies, {
+  foreignKey: 'movieId', // Chave estrangeira na tabela de reservas
+});
+
+// Relacionamento: uma reserva pertence a um filme
+redeservedMovies.belongsTo(movies, {
+  foreignKey: 'movieId', // Chave estrangeira na tabela de reservas
+});
+
 const scheduleMovies = sequelize.define('scheduleMovies', {
   id: {
     allowNull: false,
@@ -88,6 +98,15 @@ const scheduleMovies = sequelize.define('scheduleMovies', {
   phone: Sequelize.STRING
 });
 
+redeservedMovies.hasMany(scheduleMovies, {
+  foreignKey: 'reserveId', // Chave estrangeira na tabela de reservas
+});
+
+// Relacionamento: uma reserva pertence a um filme
+scheduleMovies.belongsTo(redeservedMovies, {
+  foreignKey: 'reserveId', // Chave estrangeira na tabela de reservas
+});
+
 sequelize.authenticate().then(() => {
    console.log('Connection has been established successfully.');
 }).catch((error) => {
@@ -103,7 +122,12 @@ app.get("/", (req, res) => {
 });
 
 app.get('/movies', async (req, res) => {
-  const updatedMovie = await movies.findAll();
+  const updatedMovie = await movies.findAll({
+      include: [{
+        model: redeservedMovies,
+        required: false, // false significa que você também pode obter filmes sem reservas
+      }],
+    });
       return res.status(200).json({ movie: updatedMovie });
 });
 
