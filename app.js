@@ -122,13 +122,26 @@ app.get("/", (req, res) => {
 });
 
 app.get('/movies', async (req, res) => {
-  const updatedMovie = await movies.findAll({
-      include: [{
-        model: redeservedMovies,
-        required: false, // false significa que você também pode obter filmes sem reservas
-      }],
+  try {
+    const updatedMovies = await movies.findAll({
+      include: [
+        {
+          model: redeservedMovies, // Certifique-se de que o nome do modelo esteja correto
+          required: false, // Permite obter filmes sem reservas
+          include: [
+            {
+              model: scheduleMovies, // Certifique-se de que o modelo scheduleMovies esteja definido corretamente
+              required: false, // Permite obter filmes sem horários
+            },
+          ]
+        },
+      ],
     });
-      return res.status(200).json({ movie: updatedMovie });
+    return res.status(200).json({ movies: updatedMovies }); // Use "movies" no plural para refletir a coleção
+  } catch (error) {
+    console.error('Erro ao buscar filmes:', error);
+    return res.status(500).json({ error: 'Erro ao buscar filmes' });
+  }
 });
 
 app.post('/movies', (req, res) => {
