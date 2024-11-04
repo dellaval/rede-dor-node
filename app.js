@@ -3,8 +3,6 @@ const Sequelize = require("sequelize");
 const bodyParser = require("body-parser");
 const cors = require('cors');
 
-const movieSeeder = require('./seeders/20241103113013-movies');
-
 const app = express();
 
 app.use(cors());
@@ -115,21 +113,7 @@ sequelize.authenticate().then(() => {
    console.error('Unable to connect to the database: ', error);
 });
 
-(async () => {
-  try {
-    // Sincroniza o banco de dados
-    await sequelize.sync({ force: true });
-
-    // Executa a seed
-    await movieSeeder.up(sequelize.getQueryInterface(), sequelize.constructor);
-
-    console.log('Database synced and seeds executed successfully');
-  } catch (error) {
-    console.error('Error syncing database and executing seeds:', error);
-  } finally {
-    await sequelize.close();
-  }
-})();
+sequelize.sync({ force: true });
 
 app.get("/", (req, res) => {
   res.send("Seja bem vindo ao meu.");
