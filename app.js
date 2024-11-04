@@ -1,9 +1,11 @@
 const express = require("express");
 const Sequelize = require("sequelize");
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const DB = 'rededor';
@@ -98,6 +100,11 @@ sequelize.sync({
 
 app.get("/", (req, res) => {
   res.send("Seja bem vindo ao meu.");
+});
+
+app.get('/movies', async (req, res) => {
+  const updatedMovie = await movies.findAll();
+      return res.status(200).json({ movie: updatedMovie });
 });
 
 app.post('/movies', (req, res) => {
@@ -197,6 +204,6 @@ app.delete('/reserve/:id', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(3000, '0.0.0.0', () => {
   console.log("Servidor executando na porta 3000!");
 });
