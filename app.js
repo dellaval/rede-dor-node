@@ -3,6 +3,8 @@ const Sequelize = require("sequelize");
 const bodyParser = require("body-parser");
 const cors = require('cors');
 
+const movieSeeder = require('./seeders/20241103113013-movies');
+
 const app = express();
 
 app.use(cors());
@@ -116,6 +118,8 @@ sequelize.authenticate().then(() => {
 sequelize.sync({
   force: true
 });
+
+await movieSeeder.up(sequelize.getQueryInterface(), sequelize.constructor);
 
 app.get("/", (req, res) => {
   res.send("Seja bem vindo ao meu.");
